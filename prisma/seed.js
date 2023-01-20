@@ -6,7 +6,7 @@ async function seed() {
     const movies = await createMovies();
     const screens = await createScreens();
     await createScreenings(screens, movies);
-
+    await createSeat()
     process.exit(0);
 }
 
@@ -96,6 +96,30 @@ async function createScreenings(screens, movies) {
         }
     }
 }
+
+
+async function createSeat(){
+    const seat = await prisma.seat.create({
+        data: {
+            seatNumber: "A12",
+            screen:{
+                connect: {
+                    id: 1
+                }
+            },
+            tickets: {
+                create: [{screeningId:1, customerId:1 }]
+            }
+
+        },
+        include: {
+            tickets: true
+        }
+    })
+
+    console.log('Seat Created', seat)
+}
+
 
 seed()
     .catch(async e => {
