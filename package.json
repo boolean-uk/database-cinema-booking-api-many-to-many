@@ -28,7 +28,7 @@
   "dependencies": {
     "@prisma/client": "^3.8.1",
     "cors": "^2.8.5",
-    "dotenv": "^14.3.2",
+    "dotenv": "^16.0.3",
     "express": "^4.17.2"
   }
 }
