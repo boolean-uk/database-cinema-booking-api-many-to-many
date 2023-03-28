@@ -6,6 +6,7 @@ async function seed() {
     const movies = await createMovies();
     const screens = await createScreens();
     await createScreenings(screens, movies);
+    await createTicket();
 
     process.exit(0);
 }
@@ -17,13 +18,13 @@ async function createCustomer() {
             contact: {
                 create: {
                     email: 'alice@boolean.co.uk',
-                    phone: '1234567890'
-                }
-            }
+                    phone: '1234567890',
+                },
+            },
         },
         include: {
-            contact: true
-        }
+            contact: true,
+        },
     });
 
     console.log('Customer created', customer);
@@ -50,15 +51,13 @@ async function createMovies() {
 }
 
 async function createScreens() {
-    const rawScreens = [
-        { number: 1 }, { number: 2 }
-    ];
+    const rawScreens = [{ number: 1 }, { number: 2 }];
 
     const screens = [];
 
     for (const rawScreen of rawScreens) {
         const screen = await prisma.screen.create({
-            data: rawScreen
+            data: rawScreen,
         });
 
         console.log('Screen created', screen);
@@ -81,15 +80,15 @@ async function createScreenings(screens, movies) {
                     startsAt: screeningDate,
                     movie: {
                         connect: {
-                            id: movies[i].id
-                        }
+                            id: movies[i].id,
+                        },
                     },
                     screen: {
                         connect: {
-                            id: screen.id
-                        }
-                    }
-                }
+                            id: screen.id,
+                        },
+                    },
+                },
             });
 
             console.log('Screening created', screening);
@@ -97,8 +96,37 @@ async function createScreenings(screens, movies) {
     }
 }
 
+async function createTicket() {
+    const ticket = await prisma.ticket.create({
+        data: {
+            screening: {
+                connect: {
+                    id: 1,
+                },
+            },
+            customer: {
+                connect: {
+                    id: 1,
+                },
+            },
+            seat: {
+                create: {
+                    seatName: '1A',
+                },
+            },
+        },
+        include: {
+            screening: true,
+            customer: true,
+            seat: true,
+        },
+    });
+
+    console.log('ticket created', ticket);
+}
+
 seed()
-    .catch(async e => {
+    .catch(async (e) => {
         console.error(e);
         await prisma.$disconnect();
     })

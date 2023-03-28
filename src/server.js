@@ -12,12 +12,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
 // Add your router below
 
+const cinemaRouter = require('./router/router');
+app.use('/', cinemaRouter);
 
-
-
-
-module.exports = app
+module.exports = app;
