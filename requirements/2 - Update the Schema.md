@@ -9,3 +9,25 @@
 ## Relevant Documentation
 
 [Implicit many-to-many relationships](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations#implicit-many-to-many-relations)
+
+
+//seatNumber: 1,
+            // screen: {
+            //     connect: {
+            //         id: 2
+            //     },
+            // },
+            // tickets: {
+            //     create: [{
+            //         screening: {
+            //             connect: {
+            //                 id: 2,
+            //             },
+            //         },
+            //         customer: {
+            //             connect: {
+            //                 id: 2,
+            //             },
+            //         }
+            //     }]
+            // },
