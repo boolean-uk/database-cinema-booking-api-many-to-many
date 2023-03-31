@@ -12,11 +12,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
 // Add your router below
+const customerRouter = require("./routers/customer");
+app.use("/customers", customerRouter);
 
+const ticketRouter = require("./routers/ticket");
+app.use("/tickets", ticketRouter);
 
+const seatsRouter = require("./routers/seat");
+app.use("/seats", seatsRouter);
 
 
 
