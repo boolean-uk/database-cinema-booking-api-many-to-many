@@ -62,7 +62,7 @@ model Screening {
 
 model Seat {
   id        Int      @id @default(autoincrement())
-  number    Int      @unique
+  number    String   @unique
   tickets   Ticket[]
   Screen    Screen   @relation(fields: [screenId], references: [id])
   screenId  Int

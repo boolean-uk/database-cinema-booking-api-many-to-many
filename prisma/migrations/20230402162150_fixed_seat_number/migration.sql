@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Screen" ALTER COLUMN "number" SET DATA TYPE TEXT;
