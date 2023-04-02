@@ -5,11 +5,13 @@ async function seed() {
   await createCustomer();
   const movies = await createMovies();
   const screens = await createScreens();
-  const screenings = await createScreenings(screens, movies);
-  screens.forEach(async (screen) => {
-    await createSeats(screen);
-  });
-  // TODO: Tickets
+  await createScreenings(screens, movies);
+  await createSeats(screens[0]);
+
+  //   screens.forEach(async (screen) => {
+  //     await createSeats(screen);
+  //   });
+  //  const tickets = await createTickets()
 
   process.exit(0);
 }
@@ -103,12 +105,23 @@ async function createScreenings(screens, movies) {
 async function createSeats(screen) {
   seatsToCreate = ["A1", "A2", "B1", "B2"];
   seatsToCreate.forEach(async (seat) => {
-    await prisma.seat.create({
+    const createdSeat = await prisma.seat.create({
       data: {
         number: seat,
-        screenId: screen,
+        screen: {
+          connect: {
+            id: screen.number,
+          },
+        },
+        tickets: {
+          create: [{ screeningId: screen.id, customerId: 1 }],
+        },
+      },
+      include: {
+        tickets: true,
       },
     });
+    console.log("Seat & ticket created", createdSeat);
   });
 }
 
