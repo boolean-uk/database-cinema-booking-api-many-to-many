@@ -7,6 +7,7 @@ async function seed() {
   const screens = await createScreens();
   await createScreenings(screens, movies);
   await createSeats(screens[0]);
+  // await createSeat("A1", screens[0]);
 
   //   screens.forEach(async (screen) => {
   //     await createSeats(screen);
@@ -104,25 +105,37 @@ async function createScreenings(screens, movies) {
 // Create 4 seats for the screen
 async function createSeats(screen) {
   seatsToCreate = ["A1", "A2", "B1", "B2"];
-  seatsToCreate.forEach(async (seat) => {
-    const createdSeat = await prisma.seat.create({
-      data: {
-        number: seat,
-        screen: {
-          connect: {
-            id: screen.number,
-          },
-        },
-        tickets: {
-          create: [{ screeningId: screen.id, customerId: 1 }],
+  console.log("seatstocreate", seatsToCreate);
+  console.log("screen", screen);
+
+  await Promise.all(
+    seatsToCreate.map(async (seat) => createSeat(seat, screen))
+  );
+
+  console.log("seatstocreate OUTSIDE", seatsToCreate);
+}
+
+async function createSeat(seat, screen) {
+  console.log("seatstocreate INSIDE", seat);
+
+  const createdSeat = await prisma.seat.create({
+    data: {
+      number: seat,
+      screen: {
+        connect: {
+          id: screen.number,
         },
       },
-      include: {
-        tickets: true,
+      tickets: {
+        create: [{ screeningId: screen.id, customerId: 1 }],
       },
-    });
-    console.log("Seat & ticket created", createdSeat);
+    },
+    include: {
+      tickets: true,
+    },
   });
+  console.log("Seat & ticket created", createdSeat);
+  return createdSeat;
 }
 
 seed()

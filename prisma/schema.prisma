@@ -64,7 +64,7 @@ model Seat {
   id        Int      @id @default(autoincrement())
   number    String   @unique
   tickets   Ticket[]
-  Screen    Screen   @relation(fields: [screenId], references: [id])
+  screen    Screen   @relation(fields: [screenId], references: [id])
   screenId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
