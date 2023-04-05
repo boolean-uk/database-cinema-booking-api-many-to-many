@@ -18,65 +18,33 @@ const getScreen = async (req, res) => {
 };
 
 const createTicket = async (req, res) => {
-  const {
-    screeningId,
-    customerId,
-    seats: [number],
-  } = req.body;
-
-  const screening = await prisma.screening.findFirst({
-    where: {
-      id: screeningId,
-    },
-  });
-
-  const customer = await prisma.customer.findFirst({
-    where: {
-      id: customerId,
-    },
-  });
-
-  const seats = await prisma.seat.findFirst({
-    where: {
-      number,
-    },
-  });
-
-  if (!screeningId || !customerId || !seats) {
-    return res.status(400).json({
-      error: "Missing fields in request body",
-    });
-  }
-
-  if (customer && screening && seats) {
-    const createdTicket = await prisma.ticket.create({
-      data: {
-        screening: {
-          connect: {
-            id: screeningId,
-          },
-        },
-        customer: {
-          connect: {
-            id: customerId,
-          },
-        },
-        seats: {
-          connect: { id: number },
+  const { screeningId, customerId } = req.body;
+  const seats = req.body.seats;
+  // console.log(seats)
+  
+  const createdTicket = await prisma.ticket.create({
+    data: {
+      screening: {
+        connect: {
+          id: Number(screeningId),
         },
       },
-      include: {
-        customer: true,
-        screening: true,
-        seats: true,
+      customer: {
+        connect: {
+          id: Number(customerId),
+        },
       },
-    });
-    return res.status(201).json({ ticket: createdTicket });
-  } else {
-    res.status(404).json({
-      error: "A customer or screening does not exist with the provided id.",
-    });
-  }
+      seats: {
+        connect: seats.map((seatId) => ({ id: seatId })),
+      },
+    },
+    include: {
+      customer: true,
+      screening: true,
+      seats: true,
+    },
+  });
+  return res.status(201).json({ ticket: createdTicket });
 };
 
 module.exports = {
