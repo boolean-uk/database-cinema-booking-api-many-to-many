@@ -50,22 +50,34 @@ async function createMovies() {
 }
 
 async function createScreens() {
+    const seats = [];
+    const screens = [];
     const rawScreens = [
         { number: 1 }, { number: 2 }
     ];
-
-    const screens = [];
 
     for (const rawScreen of rawScreens) {
         const screen = await prisma.screen.create({
             data: rawScreen
         });
 
+        for (i = 0; i < 9; i++) {
+            const seat = await prisma.seat.create({
+                data: {
+                    seatId: i + 1,
+                    screenId: screen.id,
+                },
+            });
+            seats.push(seat);
+        }
+
+        screen.seats = seats;
         console.log('Screen created', screen);
 
         screens.push(screen);
     }
 
+    
     return screens;
 }
 
