@@ -8,7 +8,7 @@ const getScreenById = async (req, res) => {
             id: screenId,
         },
         include: {
-            screenings:true,
+            screenings: true,
         }
     })
     res.json({ screen })
@@ -17,21 +17,33 @@ const getScreenById = async (req, res) => {
 
 // ticket -> screeningId, customerId, seatNumber
 const createNewTicket = async (req, res) => {
-    const { screeningId, customerId, seatNumber} = req.body;
+    const { screeningId, customerId, seatNumber } = req.body;
 
     const ticket = await prisma.ticket.create({
-        data:{
-            screeningId,
-            customerId,
-            seatNumber,
+        data: {
+            screening: {
+                connect: {
+                    id: screeningId
+                }
+            },
+            customer: {
+                connect: {
+                    id: customerId
+                }
+            },
+            seat: {
+                connect: {
+                    seatNumber: seatNumber
+                }
+            }
         },
-        include:{
-            screening:true,
-            customer:true,
+        include: {
+            screening: true,
+            customer: true,
             seat: true
         }
     })
-    res.json({ ticket})
+    res.json({ ticket })
 }
 
 module.exports = {

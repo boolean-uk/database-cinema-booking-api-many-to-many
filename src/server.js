@@ -15,8 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Add your router below
-
-
+const router = require('./routers/router')
+app.use('/', router)
 
 
 
