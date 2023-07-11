@@ -43,6 +43,7 @@ model Screen {
   id          Int @id @default(autoincrement())
   number      Int
   screenings  Screening[]
+  seats       Seat[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -65,6 +66,18 @@ model Ticket {
   screeningId   Int
   customer      Customer  @relation(fields: [customerId], references: [id])
   customerId    Int
+  seat          Seat      @relation(fields: [seatId], references: [id])
+  seatId        Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Seat {
+  id            Int       @id @default(autoincrement())
+  seatNumber    Int
+  screen        Screen    @relation(fields: [screenId], references: [id])
+  screenId      Int
+  ticket        Ticket[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
