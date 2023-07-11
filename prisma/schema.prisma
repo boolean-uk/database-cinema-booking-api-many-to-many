@@ -66,15 +66,16 @@ model Ticket {
   screeningId   Int
   customer      Customer  @relation(fields: [customerId], references: [id])
   customerId    Int
-  seatId        Int
-  seat          Seat      @relation(fields: [seatId], references: [id])
+  // seatId        Int
+  // seat          Seat      @relation(fields: [seatId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
 
 model Seat {
   id           Int       @id @default(autoincrement())
-  tickets      Ticket[]
+  place        String
+  // tickets      Ticket[]
   screenings   Screening[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

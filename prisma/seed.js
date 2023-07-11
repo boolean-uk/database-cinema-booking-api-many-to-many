@@ -5,7 +5,8 @@ async function seed() {
     await createCustomer();
     const movies = await createMovies();
     const screens = await createScreens();
-    await createScreenings(screens, movies);
+    const seats = await createSeats();
+    await createScreenings(screens, movies, seats);
 
 
     process.exit(0);
@@ -71,7 +72,26 @@ async function createScreens() {
     return screens;
 }
 
-async function createScreenings(screens, movies) {
+async function createSeats() {
+    const rawSeats = [
+      { place: 'A'},
+      { place: 'B'},
+  
+    ];
+  
+    const seats = [];
+  
+    for (const rawSeat of rawSeats) {
+      const seat = await prisma.seat.create({ data: rawSeat });
+      seats.push(seat);
+    }
+  
+    console.log("seat created", seats);
+  
+    return seats;
+  }
+
+async function createScreenings(screens, movies, seats) {
     const screeningDate = new Date();
 
     for (const screen of screens) {
@@ -89,6 +109,11 @@ async function createScreenings(screens, movies) {
                     screen: {
                         connect: {
                             id: screen.id
+                        }
+                    },
+                    seats: {
+                        connect: {
+                            id: seats[i].id
                         }
                     }
                 }
