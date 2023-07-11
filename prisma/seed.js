@@ -54,7 +54,7 @@ async function createMovies() {
 
 async function createScreens() {
     const rawScreens = [
-        { number: 1 }, { number: 2 }
+        { number: 8 }, { number: 9 }
     ];
 
     const screens = [];
