@@ -54,7 +54,7 @@ model Screening {
   movieId     Int
   screen      Screen    @relation(fields: [screenId], references: [id])
   screenId    Int
-  seat        SeatOnScreening []
+  seats       Seat[]
   startsAt    DateTime
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -73,18 +73,10 @@ model Ticket {
 
 model Seat {
   id            Int       @id @default(autoincrement())
-  screening     SeatOnScreening[] 
-  ticket        Ticket    @relation(fields: [ticketId], references: [id])
-  ticketId      Int
+  seatNumber    String    @unique  
+  screening     Screening[]
+  ticket        Ticket?    @relation(fields: [ticketId], references: [id])
+  ticketId      Int?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-}
-
-model SeatOnScreening {
-  seatId        Int
-  seat          Seat         @relation(fields: [seatId], references: [id])
-  screeningId   Int
-  screening     Screening    @relation(fields: [screeningId], references: [id])
-
-  @@id([seatId, screeningId])
 }
