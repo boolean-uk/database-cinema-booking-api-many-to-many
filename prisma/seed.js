@@ -57,7 +57,8 @@ async function createScreens() {
 
 	for (const rawScreen of rawScreens) {
 		const screen = await prisma.screen.create({
-			data: rawScreen,
+			data: rawScreen
+			
 		})
 
 		console.log('Screen created', screen)
