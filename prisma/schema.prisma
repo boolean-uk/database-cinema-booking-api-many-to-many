@@ -14,7 +14,7 @@ datasource db {
 model Customer {
   id          Int       @id @default(autoincrement())
   name        String
-  contact     Contact?
+  contact     Contact?  
   tickets     Ticket[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -23,7 +23,7 @@ model Customer {
 model Contact {
   id          Int       @id @default(autoincrement())
   customer    Customer  @relation(fields: [customerId], references: [id])
-  customerId  Int
+  customerId  Int       @unique
   phone       String
   email       String    @unique
   createdAt   DateTime  @default(now())
@@ -54,6 +54,7 @@ model Screening {
   movieId     Int
   screen      Screen    @relation(fields: [screenId], references: [id])
   screenId    Int
+  seat        SeatOnScreening []
   startsAt    DateTime
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -62,9 +63,28 @@ model Screening {
 model Ticket {
   id            Int       @id @default(autoincrement())
   screening     Screening @relation(fields: [screeningId], references: [id])
-  screeningId   Int
+  screeningId   Int  
   customer      Customer  @relation(fields: [customerId], references: [id])
   customerId    Int
+  seat          Seat[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Seat {
+  id            Int       @id @default(autoincrement())
+  screening     SeatOnScreening[] 
+  ticket        Ticket    @relation(fields: [ticketId], references: [id])
+  ticketId      Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model SeatOnScreening {
+  seatId        Int
+  seat          Seat         @relation(fields: [seatId], references: [id])
+  screeningId   Int
+  screening     Screening    @relation(fields: [screeningId], references: [id])
+
+  @@id([seatId, screeningId])
 }
