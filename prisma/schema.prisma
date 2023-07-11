@@ -23,7 +23,7 @@ model Customer {
 model Contact {
   id          Int       @id @default(autoincrement())
   customer    Customer  @relation(fields: [customerId], references: [id])
-  customerId  Int
+  customerId  Int       @unique
   phone       String
   email       String    @unique
   createdAt   DateTime  @default(now())
@@ -50,6 +50,7 @@ model Screen {
 model Screening {
   id          Int       @id @default(autoincrement())
   tickets     Ticket[]
+  seats       Seat[]
   movie       Movie     @relation(fields: [movieId], references: [id])
   movieId     Int
   screen      Screen    @relation(fields: [screenId], references: [id])
@@ -65,6 +66,17 @@ model Ticket {
   screeningId   Int
   customer      Customer  @relation(fields: [customerId], references: [id])
   customerId    Int
+  seatId        Int
+  seat          Seat      @relation(fields: [seatId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Seat {
+  id           Int       @id @default(autoincrement())
+  tickets      Ticket[]
+  screenings   Screening[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
 }

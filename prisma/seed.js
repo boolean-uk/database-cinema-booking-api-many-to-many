@@ -7,8 +7,10 @@ async function seed() {
     const screens = await createScreens();
     await createScreenings(screens, movies);
 
+
     process.exit(0);
 }
+
 
 async function createCustomer() {
     const customer = await prisma.customer.create({
