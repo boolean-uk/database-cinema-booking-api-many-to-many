@@ -43,9 +43,15 @@ model Screen {
   id         Int         @id @default(autoincrement())
   number     Int
   screenings Screening[]
+<<<<<<< HEAD
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   seats      Seats[]
+=======
+  seats      Seat[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+>>>>>>> 2d7b9d23b85cac9b44555faa224125bb214a53c8
 }
 
 model Screening {
@@ -58,6 +64,7 @@ model Screening {
   startsAt  DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+<<<<<<< HEAD
 }
 
 model Ticket {
@@ -75,6 +82,25 @@ model Seats {
   id        Int      @id @default(autoincrement())
   row       String
   column    Int
+=======
+}
+
+model Ticket {
+  id          Int       @id @default(autoincrement())
+  screening   Screening @relation(fields: [screeningId], references: [id])
+  screeningId Int
+  customer    Customer  @relation(fields: [customerId], references: [id])
+  customerId  Int
+  seats       Seat[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Seat {
+  id        Int      @id @default(autoincrement())
+  number    Int
+  screenId  Int
+>>>>>>> 2d7b9d23b85cac9b44555faa224125bb214a53c8
   tickets   Ticket[]
   screens   Screen[]
   createdAt DateTime @default(now())

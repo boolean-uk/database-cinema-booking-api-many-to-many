@@ -95,7 +95,11 @@ async function createScreenings(screens, movies) {
 
             console.log('Screening created', screening);
         }
-    }
+    }  
+}
+
+async function createSeats() {
+  
 }
 
 const createSeats = async (screens) => {
