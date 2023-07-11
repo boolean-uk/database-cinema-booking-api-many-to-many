@@ -5,7 +5,9 @@ async function seed() {
     await createCustomer();
     const movies = await createMovies();
     const screens = await createScreens();
-    await createScreenings(screens, movies);
+    const screenings = await createScreenings(screens, movies);
+    const seats = await createSeats()
+    await createTickets(screenings, seats)
 
     process.exit(0);
 }
@@ -72,10 +74,11 @@ async function createScreens() {
 async function createScreenings(screens, movies) {
     const screeningDate = new Date();
 
+    const screenings = []
+
     for (const screen of screens) {
         for (let i = 0; i < movies.length; i++) {
             screeningDate.setDate(screeningDate.getDate() + i);
-
             const screening = await prisma.screening.create({
                 data: {
                     startsAt: screeningDate,
@@ -91,8 +94,53 @@ async function createScreenings(screens, movies) {
                     }
                 }
             });
-
             console.log('Screening created', screening);
+            screenings.push(screening)
+        }
+    }
+    return screenings
+}
+
+async function createSeats() {
+    const seats = []
+    const seatNames = ['1A', '1B', '1C', '1D']
+
+    for (const seatName of seatNames) {
+        const seat = await prisma.seat.create({
+            data: {
+                seatName: seatName
+            }
+        })
+        console.log('seat created', seat);
+
+        seats.push(seat)
+    }
+    return seats
+}
+
+async function createTickets(screenings, seats) {
+    for (const screening of screenings) {
+        for (let i = 0; i < seats.length; i++) {
+            const ticket = await prisma.ticket.create({
+                data: {
+                    customer: {
+                        connect: {
+                            id: 1
+                        }
+                    },
+                    screening: {
+                        connect: {
+                            id: screening.id
+                        }
+                    },
+                    seat: {
+                        connect: {
+                            seatName: seats[i].seatName
+                        }
+                    }
+                }
+            })
+            console.log('Ticket created', ticket);
         }
     }
 }
