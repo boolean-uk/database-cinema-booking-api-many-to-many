@@ -8,6 +8,7 @@ async function seed() {
     await createScreenings(screens, movies);
     const screeningId = 2
     await createTicket(customer, screeningId);
+    await createTicket(customer, screeningId);
     process.exit(0);
 }
 

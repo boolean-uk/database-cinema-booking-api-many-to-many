@@ -1,16 +1,17 @@
 const prisma = require("../utils/prisma");
 
 const seatsByScreenId = async (req, res) => {
-  const screenId = req.body.screenId;
-  const seats = await prisma.screen.findMany({
+  const screenId = Number(req.body.screenId);
+
+  const seats = await prisma.seat.findMany({
     where: {
-      id: screenId
-    },
-    include: {
-      seats: true
+      screen: {
+        every: {
+          id: screenId
+        }
+      }
     }
-  });
-  console.log(seats)
+  })
   res.send(seats);
 };
 
