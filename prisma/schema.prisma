@@ -45,7 +45,7 @@ model Screen {
   screenings Screening[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  seats      Seats[]
+  seats      Seat[]
 }
 
 model Screening {
@@ -68,10 +68,10 @@ model Ticket {
   customerId  Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  seats       Seats[]
+  seats       Seat[]
 }
 
-model Seats {
+model Seat {
   id        Int      @id @default(autoincrement())
   row       String
   column    Int

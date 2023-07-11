@@ -98,10 +98,6 @@ async function createScreenings(screens, movies) {
     }  
 }
 
-async function createSeats() {
-  
-}
-
 const createSeats = async (screens) => {
     const seats = []
     let letter
@@ -121,7 +117,7 @@ const createSeats = async (screens) => {
                     letter = 'D'
                     break
             }
-            const seat = await prisma.seats.create({
+            const seat = await prisma.seat.create({
                 data: {
                     row: letter,
                     column: j,
