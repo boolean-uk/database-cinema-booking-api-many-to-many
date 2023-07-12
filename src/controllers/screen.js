@@ -19,6 +19,11 @@ const getAllInfo = async(req, res) => {
     res.json({ info: getAllInfo });
 }
 
+const getSeats = async(req, res)=> {
+  const getSeats = await prisma.seat.findMany();
+  res.json({ seats: getSeats });
+}
+
 module.exports = {
-    getAllInfo,
+    getAllInfo, getSeats
   };

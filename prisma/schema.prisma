@@ -74,7 +74,8 @@ model Ticket {
 
 model Seat {
   id           Int       @id @default(autoincrement())
-  place        String
+  aisle        String
+  number       Int
   // tickets      Ticket[]
   screenings   Screening[]
   createdAt    DateTime  @default(now())
