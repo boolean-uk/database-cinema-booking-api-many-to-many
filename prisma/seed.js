@@ -120,6 +120,10 @@ async function createScreenings(screens, movies, seats) {
       }
     }
   }
+
+  async function createTickets(){
+    
+  }
   
 
 seed()
