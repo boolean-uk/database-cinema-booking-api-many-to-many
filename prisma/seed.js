@@ -5,10 +5,28 @@ async function seed() {
   await createCustomer();
   const movies = await createMovies();
   const screens = await createScreens();
-  await createScreenings(screens, movies);
-  await createSeats(screening);
+  const screenings = await createScreenings(screens, movies);
+  await createSeats(screenings);
   process.exit(0);
 }
+
+async function createSeats(numberOfSeats) {
+    let seats = [];
+  
+    for (let i = 0; i < numberOfSeats; i++) {
+      const seatNumber = `A${i + 1}`;
+      const seat = await prisma.seat.create({
+        data: {
+          seatNumber: seatNumber,
+        },
+      });
+      seats.push(seat);
+      console.log("created seat", seat);
+    }
+  
+    return seats;
+  }
+  
 
 async function createCustomer() {
   const customer = await prisma.customer.create({
@@ -88,13 +106,6 @@ async function createScreenings(screens, movies) {
               id: screen.id,
             },
           },
-          seats: {
-            create: [
-              {
-                seatNumber: `A${i}${j}`,
-              },
-            ],
-          },
         },
       });
       screenings.push(screening);
@@ -102,24 +113,6 @@ async function createScreenings(screens, movies) {
     }
   }
   return screenings;
-}
-
-async function createSeats(screenings) {
-  for (let i = 0; i < screenings.length; i++) {
-    const seat = await prisma.seat.create({
-      data: {
-        seatNumber: `A${i}`,
-        screening: {
-          connect: [
-            {
-              seatId_screeningId: { screeningId: screenings[i].id },
-            },
-          ],
-        },
-      },
-    });
-    console.log("created seat", seat);
-  }
 }
 
 seed()
