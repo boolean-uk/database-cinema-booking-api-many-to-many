@@ -33,7 +33,15 @@ const createTicketWithSeatsDb = async (request) => {
         },
       },
       seats: {
-        connect: request.seats.map((seat) => ({ number: seat.number })),
+        create: request.seats.map((seat) => ({ 
+            seat: {
+                connect: {
+                    number: seat.number,
+                }
+            },
+            sold: seat.sold, 
+            discount: seat.discount
+        })),
       },
     },
     include: {
