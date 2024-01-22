@@ -4,6 +4,8 @@ const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
 
+const router = require('./router');
+
 app.disable('x-powered-by');
 
 // Add middleware
@@ -17,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 // Add your router below
 
 
+app.use("/", router)
 
 
 
