@@ -33,14 +33,14 @@ async function getScreenById(req, res) {
  */
 async function createTicket(req, res) {
   const { customerId, screeningId } = req.body;
-  const seats = req.body.seatIds.map((seatId) => ({ id: seatId }));
+  const seats = req.body.seatIds.map((seatId) => ({ seatId }));
 
   const ticket = await prisma.ticket.create({
     data: {
       customerId,
       screeningId,
       seats: {
-        connect: seats,
+        create: seats,
       },
     },
     include: {
