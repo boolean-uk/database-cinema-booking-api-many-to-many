@@ -26,7 +26,6 @@ async function createSeats(numberOfSeats) {
   
     return seats;
   }
-  
 
 async function createCustomer() {
   const customer = await prisma.customer.create({
