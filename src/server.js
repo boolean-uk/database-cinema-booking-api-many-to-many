@@ -19,4 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 const screenRouter = require('./routers/screen.js')
 app.use('/screens', screenRouter)
 
+const ticketRouter = require('./routers/ticket.js')
+app.use('/tickets', ticketRouter)
+
 module.exports = app
