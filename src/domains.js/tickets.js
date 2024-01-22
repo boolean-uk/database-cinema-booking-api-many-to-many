@@ -31,7 +31,32 @@ const getTicketsWithSeatsForAScreenDb = async (id) => {
         }
     })
 }
-const createTicketWithSeatsDb = async () => {}
+
+const createTicketWithSeatsDb = async (request) => {  
+    const ticket = await prisma.ticket.create({
+        data: {
+            customer: {
+                connect: {
+                    id: request.customer
+                }
+            }, 
+            screening: {
+                connect: {
+                    id: request.screening
+                }
+            },
+            seats: {
+                connect: request.seats.map((seat) => ({number: seat.number}))
+            },
+        }, 
+        include: {
+            customer: true,
+            screening: true,
+            seats: true
+        }
+    })
+    return ticket
+}
 
 module.exports = {
     getTicketsWithSeatsForAScreenDb,
