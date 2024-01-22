@@ -1,13 +1,15 @@
 const prisma = require("../utils/prisma.js");
 
-const getScreensDB = async () => 
-    await prisma.screen.findMany({
+const getScreenDB = async (id) =>
+    await prisma.screen.findUnique({
+        where: {
+            id: id,
+        },
         include: {
-            seats: true
-        }
-    })
-
+            seats: true,
+        },
+    });
 
 module.exports = {
-    getScreensDB
-}
+    getScreenDB,
+};
