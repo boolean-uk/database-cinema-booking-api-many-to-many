@@ -66,7 +66,7 @@ model Ticket {
   screeningId   Int
   customer      Customer  @relation(fields: [customerId], references: [id])
   customerId    Int
-  seats         Seat[]
+  seats         TicketsOnSeats[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -74,9 +74,20 @@ model Ticket {
 model Seat {
   id            Int       @id @default(autoincrement())
   number        Int       @unique
-  tickets       Ticket[]
   screen        Screen    @relation(fields: [screenId], references: [id])
   screenId      Int
+  tickets       TicketsOnSeats[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model TicketsOnSeats {
+  ticket    Ticket  @relation(fields: [ticketId], references:[id]) 
+  ticketId  Int    
+  seat      Seat  @relation(fields: [seatId], references:[id])
+  seatId    Int      
+  sold      Boolean
+  discount  Boolean
+
+  @@id([ticketId, seatId])
 }
