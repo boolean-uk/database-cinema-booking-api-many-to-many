@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Add your router below
+const router = require("./routers/tickets.js")
+app.use("/", router)
 
 
 
