@@ -1,12 +1,13 @@
-const { PrismaClientKnownRequestError } = require("@prisma/client/runtime/library.js");
+// const { PrismaClientKnownRequestError } = require("@prisma/client/runtime/library.js");
 
-const { getScreensDB } = require("../domains/screen.js");
+const { getScreenDB } = require("../domains/screen.js");
 
-const getScreens = async (req, res) => {
-    const foundScreens = await getScreensDB()
+const getScreen = async (req, res) => {
+    const id = Number(req.params.id)
+    const foundScreens = await getScreenDB(id)
     res.status(200).json({screens: foundScreens})
 }
 
 module.exports = {
-    getScreens
+    getScreen
 }
