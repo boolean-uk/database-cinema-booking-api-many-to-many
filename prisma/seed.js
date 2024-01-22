@@ -5,8 +5,9 @@ async function seed() {
   const customer = await createCustomer();
   const movies = await createMovies();
   const screens = await createScreens();
-  await createScreenings(screens, movies);
-  const seats = await createSeats(screens);
+  const screenings = await createScreenings(screens, movies);
+  await createSeats(screens);
+  await createTicket(customer, screenings[0])
   process.exit(0);
 }
 
@@ -69,30 +70,32 @@ async function createScreens() {
 
 async function createScreenings(screens, movies) {
   const screeningDate = new Date();
+
+  const screenings = []
   
   for (const screen of screens) {
       for (let i = 0; i < movies.length; i++) {
           screeningDate.setDate(screeningDate.getDate() + i);
-          
           const screening = await prisma.screening.create({
               data: {
                   startsAt: screeningDate,
                   movie: {
                       connect: {
                           id: movies[i].id,
-            },
-        },
-          screen: {
-              connect: {
-                  id: screen.id,
+                        },
+                    },
+                    screen: {
+                        connect: {
+                            id: screen.id,
+                        },
+                    },
                 },
-            },
-        },
-    });
-    
+            });
+        screenings.push(screening)   
     console.log("Screening created", screening);
 }
 }
+return screenings
 }
 
 async function createSeats(screens) {
@@ -122,7 +125,54 @@ async function createSeats(screens) {
             }
         }
     }
-console.log("Seats created", seats);
+    console.log("Seats created", seats);
+    return seats
+}
+
+async function createTicket(customer, screening) {
+    const rawTickets = [{ seat: 1 }, { seat: 2 }]
+    
+    const ticket = await prisma.ticket.create({
+        data: { 
+            screening: {
+                connect: {
+                    id: screening.id
+                }}, 
+            customer: {
+                connect: {
+                    id: customer.id
+                }}, 
+            seats: {
+                connect: 
+                    rawTickets.map((ticket) => (
+                        {number: ticket.seat}
+                    ))
+            }},
+        include:  {
+            screening: {
+                select: {
+                    movie: {
+                        select: {
+                            title: true
+                        }
+                    }
+                }
+            }, 
+            customer: {
+                select: {
+                    name: true
+                }
+            },
+            seats: {
+                select: {
+                    number: true
+                }
+            }
+        }
+
+    })
+    console.log("ticket created", ticket)
+    return ticket
 }
 seed()
   .catch(async (e) => {
