@@ -1,17 +1,12 @@
 const prisma = require("../utils/prisma.js");
 
-const createTicketDB = async (screeningId, customerId) =>
+const createTicketDB = async (screeningId, customerId, seats) =>
     await prisma.ticket.create({
         data: {
-            screening: {
-                connect: {
-                    id: screeningId,
-                },
-            },
-            customer: {
-                connect: {
-                    id: customerId,
-                },
+            screeningId,
+            customerId,
+            seats: {
+                connect: seats,
             },
         },
         include: {
@@ -22,6 +17,7 @@ const createTicketDB = async (screeningId, customerId) =>
                 },
             },
             customer: true,
+            seats: true,
         },
     });
 
