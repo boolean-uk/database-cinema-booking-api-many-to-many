@@ -1,64 +1,59 @@
-const prisma = require("../utils/prisma")
+const prisma = require("../utils/prisma");
 
 const getTicketsWithSeatsForAScreenDb = async (id) => {
-    return await prisma.screen.findUnique({
-        where: { id },
-        include: { 
-            seats: {
-                include: {
-                    tickets: {
-                        include: {
-                            customer: {
-                                select: {
-                                    name:true
-                                }
-                            },
-                            screening: {
-                                select: {
-                                    movie: {
-                                        select: {
-                                            title: true
-                                        }
-                                    },
-                                    startsAt: true
-                                }
-                            }
-                        }
-                    }
+  return await prisma.ticket.findMany({
+    where: {
+      seats: {
+        some: {
+          seat: {
+            screen: {
+              id: id,
+            },
+          },
+        },
+      },
+    }, 
+    include: {
+        seats: true
+    }
+  });
+};
 
-                }
-            }
-        }
-    })
-}
-
-const createTicketWithSeatsDb = async (request) => {  
-    const ticket = await prisma.ticket.create({
-        data: {
-            customer: {
+const createTicketWithSeatsDb = async (request) => {
+  const ticket = await prisma.ticket.create({
+    data: {
+      customer: {
+        connect: {
+          id: request.customer,
+        },
+      },
+      screening: {
+        connect: {
+          id: request.screening,
+        },
+      },
+      seats: {
+        create: request.seats.map((seat) => ({ 
+            seat: {
                 connect: {
-                    id: request.customer
-                }
-            }, 
-            screening: {
-                connect: {
-                    id: request.screening
+                    number: seat.number,
                 }
             },
-            seats: {
-                connect: request.seats.map((seat) => ({number: seat.number}))
-            },
-        }, 
-        include: {
-            customer: true,
-            screening: true,
-            seats: true
-        }
-    })
-    return ticket
-}
+            sold: seat.sold, 
+            discount: seat.discount
+        })),
+      },
+    },
+    include: {
+      customer: true,
+      screening: true,
+      seats: true,
+    },
+  });
+  return ticket;
+};
 
 module.exports = {
-    getTicketsWithSeatsForAScreenDb,
-    createTicketWithSeatsDb
-}
+  getTicketsWithSeatsForAScreenDb,
+  createTicketWithSeatsDb,
+};

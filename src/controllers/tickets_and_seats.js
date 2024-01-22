@@ -1,8 +1,8 @@
 const { getTicketsWithSeatsForAScreenDb, createTicketWithSeatsDb } = require("../domains.js/tickets_and_seats")
 
 const getTicketsWithSeatsForAScreen = async (req, res) => {
-    const screenWithTickets = await getTicketsWithSeatsForAScreenDb(Number(req.params.id))
-    res.json({ screenWithTickets })
+    const ticketsForAScreen = await getTicketsWithSeatsForAScreenDb(Number(req.params.id))
+    res.json({ ticketsForAScreen })
 }
 const createTicketWithSeats = async (req, res) => {
     const request = req.body

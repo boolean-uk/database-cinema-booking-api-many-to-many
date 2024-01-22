@@ -135,7 +135,7 @@ async function createSeats(screens) {
 }
 
 async function createTicket(customer, screening) {
-  const rawTickets = [{ seat: 1 }, { seat: 2 }];
+  const rawTicket = [{ seat: 1 }, { seat: 2 }];
 
   const ticket = await prisma.ticket.create({
     data: {
@@ -150,7 +150,15 @@ async function createTicket(customer, screening) {
         },
       },
       seats: {
-        connect: rawTickets.map((ticket) => ({ number: ticket.seat })),
+        create: rawTicket.map((ticket) => ({ 
+          seat: {
+            connect: {
+              id: ticket.seat
+            }
+          },
+          sold: true,
+          discount: false
+        })),
       },
     },
     include: {
@@ -168,11 +176,7 @@ async function createTicket(customer, screening) {
           name: true,
         },
       },
-      seats: {
-        select: {
-          number: true,
-        },
-      },
+      seats: true
     },
   });
 
