@@ -9,7 +9,8 @@ erDiagram
     SCREEN ||--|{  SEAT : has 
     SCREENING ||--o{ TICKET : has 
     CUSTOMER ||--o{ TICKET : has 
-    TICKET }|--|{  SEAT : has 
+    TICKET ||--|{  TICKETSONSEATS : has 
+    SEAT||--|{ TICKETSONSEATS : has 
 
     CUSTOMER {
         Int id PK
@@ -53,6 +54,14 @@ erDiagram
         Ticket[] tickets 
         DateTime CreatedAt         
         DateTime UpdatedAt 
+    }
+    TICKETSONSEATS {
+        Ticket  ticket 
+        Int     ticketId    FK 
+        Seat    seat
+        Int     seatId      FK
+        Boolean sold
+        Boolean discount
     }
 
 ```
