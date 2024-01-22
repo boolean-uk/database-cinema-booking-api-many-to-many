@@ -27,6 +27,36 @@ async function getScreenById(req, res) {
   res.json({ screen });
 }
 
+/**
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ */
+async function createTicket(req, res) {
+  const { customerId, screeningId } = req.body;
+  const seats = req.body.seatIds.map((seatId) => ({ id: seatId }));
+
+  const ticket = await prisma.ticket.create({
+    data: {
+      customerId,
+      screeningId,
+      seats: {
+        connect: seats,
+      },
+    },
+    include: {
+      screening: {
+        include: {
+          movie: true,
+        },
+      },
+      seats: true,
+    },
+  });
+
+  res.status(201).json({ ticket });
+}
+
 module.exports = {
   getScreenById,
+  createTicket,
 };
