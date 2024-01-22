@@ -45,7 +45,7 @@ model Screen {
   screenings  Screening[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  seat        Seat[]
+  seats       Seat[]
 }
 
 model Screening {
