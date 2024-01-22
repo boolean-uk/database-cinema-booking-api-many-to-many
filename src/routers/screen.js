@@ -1,9 +1,9 @@
 const express = require("express");
 
-const { getScreens } = require('../controllers/screen.js')
+const { getScreen } = require('../controllers/screen.js')
 
 const router = express.Router();
 
-router.get("/", getScreens);
+router.get("/:id", getScreen);
 
 module.exports = router;
