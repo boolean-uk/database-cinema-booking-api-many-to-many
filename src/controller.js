@@ -6,7 +6,6 @@ const prisma = require("./utils/prisma");
  */
 async function getScreenById(req, res) {
   const id = Number(req.params.id);
-  console.log(id);
   const screen = await prisma.screen.findUniqueOrThrow({
     where: {
       id: id,
