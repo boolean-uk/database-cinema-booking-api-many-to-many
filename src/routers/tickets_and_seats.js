@@ -1,5 +1,5 @@
 const express = require("express")
-const { getTicketsWithSeatsForAScreen, createTicketWithSeats } = require("../controllers/tickets")
+const { getTicketsWithSeatsForAScreen, createTicketWithSeats } = require("../controllers/tickets_and_seats")
 const router = express.Router()
 
 // Add a route to get a list of records for the new model for a particular screen, using a screenId parameter
