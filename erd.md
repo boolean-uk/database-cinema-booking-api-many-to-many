@@ -7,8 +7,8 @@ erDiagram
     SCREEN ||--o{  SCREENING : has 
     MOVIE ||--o{  SCREENING : has 
     SCREEN ||--|{  SEAT : has 
-    SCREENING ||--|{ TICKET : has 
-    CUSTOMER ||--|{ TICKET : has 
+    SCREENING ||--o{ TICKET : has 
+    CUSTOMER ||--o{ TICKET : has 
     TICKET }|--|{  SEAT : has 
 
     CUSTOMER {
