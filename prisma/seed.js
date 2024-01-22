@@ -120,7 +120,7 @@ async function createTicket(customer, seats, screening) {
         data: {
             customerId: customer.id,
             seats: {
-                connect: [{id: seats[0].id}, {id: seats[1].id}]
+                create: [{seatId: seats[0].id}, {seatId: seats[1].id}]
             },
             screeningId: screening.id
         },
