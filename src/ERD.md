@@ -1,15 +1,8 @@
 # Enitity Relational Diagram
 
 ```mermaid
+
 erDiagram
-
-
-
-
-
-
-
-
 
 USER {
     id Int(PK)
@@ -40,6 +33,7 @@ TICKET {
 }
 
 TICKET }|--o| SCREENING : canHave
+
 TICKET }|--|{ SEAT : canHave
 
 SEAT {
