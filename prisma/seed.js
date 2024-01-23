@@ -127,7 +127,6 @@ async function createSeats(screens) {
           screen: true,
         },
       };
-      console.log("Pquery", pQuery);
       const seat = await prisma.seat.create(pQuery);
 
       seats.push(seat);
@@ -163,7 +162,6 @@ async function createTickets(seats) {
         seats: true,
       },
     });
-    console.log("Ticket Created", ticket);
   }
 }
 
