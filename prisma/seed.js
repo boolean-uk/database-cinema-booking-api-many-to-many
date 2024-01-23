@@ -2,11 +2,13 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function seed() {
-  await createCustomer()
+  const customer = await createCustomer()
   const movies = await createMovies()
   const screens = await createScreens()
-  await createScreenings(screens, movies)
+  const screenings = await createScreenings(screens, movies)
+  console.log(screenings)
   await createSeats()
+  await createTicket(customer, screenings)
 
   process.exit(0)
 }
@@ -92,6 +94,8 @@ async function createScreenings(screens, movies) {
       })
 
       console.log('Screening created', screening)
+
+      return screening
     }
   }
 }
@@ -110,9 +114,58 @@ const createSeats = async () => {
     data: seatsData
   })
 
-  console.log('Created Seats', createSeats)
+  console.log('Created Seats', createdSeats)
 
   return createdSeats
+}
+
+const createTicket = async (customer, screening) => {
+  const seatsArray = [1, 2, 3, 4, 5, 6]
+
+  const createdTicket = await prisma.ticket.create({
+    data: {
+      screening: {
+        connect: {
+          id: screening.id
+        }
+      },
+      customer: {
+        connect: {
+          id: customer.id
+        }
+      },
+      seats: {
+        create: seatsArray.map((seatId) => ({
+          seat: {
+            connect: {
+              id: seatId
+            }
+          }
+        }))
+      }
+    },
+    include: {
+      screening: {
+        select: {
+          movie: {
+            select: {
+              title: true
+            }
+          }
+        }
+      },
+      customer: {
+        select: {
+          name: true
+        }
+      },
+      seats: true
+    }
+  })
+
+  console.log('Created Ticket', createdTicket)
+
+  return createdTicket
 }
 
 seed()
