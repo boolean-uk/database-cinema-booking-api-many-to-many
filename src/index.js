@@ -5,5 +5,5 @@ const app = require('./server.js')
 
 // Start our API server
 app.listen(port, () => {
-    console.log(`\n Server is running on http://localhost:${port}\n`);
+    console.log(`\n Server is running on http://localhost:4000`);
 });
