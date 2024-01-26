@@ -4,6 +4,6 @@ const router = express.Router()
 
 router.get('/:screenId', getSeats)
 
-router.post('/ticket/:screenId', createTicket)
+router.post('/ticket', createTicket)
 
 module.exports = router

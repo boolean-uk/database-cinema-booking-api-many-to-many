@@ -4,11 +4,15 @@ const getSeatsDb = async (screenId) => await prisma.seat.findMany({
     where: { screenId }
 })
 
-const createTicketDb = async (screeningId, customerId, seats) => await prisma.ticket.create({
+const createTicketDb = async (screeningId, customerId, seatId) => await prisma.ticket.create({
     data: {
         screeningId,
         customerId,
-        seats: { connect: seats }
+        seats: {
+            connect: {
+                id: seatId
+            }
+        }
     },
     include: {
         seats: true

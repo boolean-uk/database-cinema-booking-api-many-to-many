@@ -7,10 +7,8 @@ const getSeats = async (req, res) => {
 }
 
 const createTicket = async (req, res) => {
-    const { screeningId, customerId } = req.body
-    const screenId = Number(req.params.screenId)
-    const seats = await getSeatsDb(screenId)
-    const ticket = await createTicketDb(screeningId, customerId, seats)
+    const { screeningId, customerId, seatId } = req.body
+    const ticket = await createTicketDb(screeningId, customerId, seatId)
     res.status(200).json({ ticket })
 }
 
