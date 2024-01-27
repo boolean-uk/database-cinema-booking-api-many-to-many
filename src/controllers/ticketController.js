@@ -1,16 +1,16 @@
 // DB
 const {
-  getTicketsByScreenIdDb,
+  getSeatsByScreenIdDb,
   createTicketDb
 } = require('../domains/ticketDomain')
 
-const getTicketsByScreenId = async (req, res, next) => {
+const getSeatsByScreenId = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    const foundTickets = await getTicketsByScreenIdDb(id)
+    const foundSeats = await getSeatsByScreenIdDb(id)
 
-    res.status(200).json({ tickets: foundTickets })
+    res.status(200).json({ seats: foundSeats })
   } catch (error) {
     res.status(error.status ?? 500).json({ error: error.message })
   }
@@ -28,4 +28,4 @@ const createTicket = async (req, res, next) => {
   }
 }
 
-module.exports = { getTicketsByScreenId, createTicket }
+module.exports = { getSeatsByScreenId, createTicket }

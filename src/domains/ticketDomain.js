@@ -1,22 +1,13 @@
 const prisma = require('../utils/prisma')
 
-const getTicketsByScreenIdDb = async (id) => {
-  const foundTickets = await prisma.ticket.findMany({
+const getSeatsByScreenIdDb = async (id) => {
+  const foundSeats = await prisma.seat.findMany({
     where: {
-      seats: {
-        some: {
-          seat: {
-            screenId: Number(id)
-          }
-        }
-      }
-    },
-    include: {
-      seats: true
+      screenId: Number(id)
     }
   })
 
-  return foundTickets
+  return foundSeats
 }
 
 const createTicketDb = async (customerId, screeningId, seatsArray) => {
@@ -64,4 +55,4 @@ const createTicketDb = async (customerId, screeningId, seatsArray) => {
   return createdTicket
 }
 
-module.exports = { getTicketsByScreenIdDb, createTicketDb }
+module.exports = { getSeatsByScreenIdDb, createTicketDb }

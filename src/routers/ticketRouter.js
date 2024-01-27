@@ -3,11 +3,11 @@ const router = express.Router()
 
 // Controllers
 const {
-  getTicketsByScreenId,
+  getSeatsByScreenId,
   createTicket
 } = require('../controllers/ticketController')
 
-router.get('/screen/:id', getTicketsByScreenId)
+router.get('/screen/:id', getSeatsByScreenId)
 
 router.post('/', createTicket)
 
