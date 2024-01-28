@@ -53,22 +53,22 @@ async function createMovies() {
 async function createScreens() {
     const rawScreens = [
         {
-             number: 1,
-             seat: {
+            number: 1,
+            seat: {
                 create: [
-                    {seatRow: 'A', seatNumber: 1},
-                    {seatRow: 'A', seatNumber: 2},
-                    {seatRow: 'A', seatNumber: 3}
+                    { seatRow: 'A', seatNumber: 1 },
+                    { seatRow: 'A', seatNumber: 2 },
+                    { seatRow: 'A', seatNumber: 3 }
                 ]
-             }
-         },
-        { 
+            }
+        },
+        {
             number: 2,
             seat: {
                 create: [
-                    {seatRow: 'A', seatNumber: 1},
-                    {seatRow: 'A', seatNumber: 2},
-                    {seatRow: 'A', seatNumber: 3}
+                    { seatRow: 'A', seatNumber: 1 },
+                    { seatRow: 'A', seatNumber: 2 },
+                    { seatRow: 'A', seatNumber: 3 }
                 ]
             }
         }
@@ -121,13 +121,13 @@ async function createTickets() {
     const ticket = await prisma.ticket.create({
         data: {
             screening: {
-                connect: {id: 1}
+                connect: { id: 1 }
             },
             customer: {
-                connect: {id: 1}
+                connect: { id: 1 }
             },
             seat: {
-                connect: [{id: 1}, {id: 2}]
+                connect: [{ id: 1 }, { id: 2 }]
             }
         },
         include: {
