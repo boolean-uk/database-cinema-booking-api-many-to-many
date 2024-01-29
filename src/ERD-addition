@@ -1,0 +1,9 @@
+SEATS{
+  number: Int,
+  customerId: Int,
+  screen: Int
+  createdAt: DateTime,
+  updatedAt: DateTime,
+}
+Links to,  TICKET, SCREEN, USER
+
