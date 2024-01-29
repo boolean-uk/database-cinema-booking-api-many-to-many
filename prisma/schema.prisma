@@ -68,3 +68,14 @@ model Ticket {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
+
+model Seat {
+  id            Int       @id @default(autoincrement())
+  number        Int 
+  customer      Customer  @relation(fields: [customerId], references: [id])
+  customerId    Int
+  screen        Screen    @relation(fields: [screenId], references: [id])
+  screenId      Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
