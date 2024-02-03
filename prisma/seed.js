@@ -6,6 +6,8 @@ async function seed() {
     const movies = await createMovies();
     const screens = await createScreens();
     await createScreenings(screens, movies);
+    const seats = await createSeats(screens);
+    await createTickets(seats);
 
     process.exit(0);
 }
@@ -96,6 +98,54 @@ async function createScreenings(screens, movies) {
         }
     }
 }
+
+
+    async function createSeats(screens) {
+        const seatRows = [
+            { seatRow: "Row A", seatNumber: 1 },
+            { seatRow: "Row A", seatNumber: 2 },
+            { seatRow: "Row B", seatNumber: 1 },
+            { seatRow: "Row B", seatNumber: 2 },
+        ];
+
+        const seats = [];
+
+        for (const seatRow of seatRows) {
+            for (const screen of screens) {
+                const seat = await prisma.seat.create({
+                    data: { ...seatRow, screen: { connect: { id: screen.id } } },
+                    include: { screen: true },
+                });
+
+                seats.push(seat);
+            }
+        }
+
+        return seats;
+    }
+ 
+
+
+    async function createTickets(seats) {
+        for (const seat of seats) {
+            const ticket = await prisma.ticket.create({
+                data: {
+                    customer: { connect: { id: 1 } },
+                    screening: { connect: { id: 1 } },
+                    seat: { connect: { id: seat.id } },  // Change 'seats' to 'seat'
+                },
+                include: { customer: true, screening: true },
+            });
+    
+            console.log("Ticket Created", ticket);
+        }
+    }
+    
+    
+   
+
+
+
 
 seed()
     .catch(async e => {
