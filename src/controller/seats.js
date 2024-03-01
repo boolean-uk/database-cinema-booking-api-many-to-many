@@ -1,20 +1,15 @@
-const prisma = require("../utils/prisma");
+const { getSeatsDb, createTicketDb } = require('../domains/seat.js')
 
-const getSeatsById = async (req, res) => {
-  const id = Number(req.params.id);
+const getSeats = async (req, res) => {
+    const screenId = Number(req.params.screenId)
+    const seats = await getSeatsDb(screenId)
+    res.status(201).json({ seats })
+}
 
-  const seats = await prisma.seat.findMany({
-    where: {
-      screening: {
-        some: {
-          screenId: id,
-        },
-      },
-    },
-  });
-  res.json(seats);
-};
+const createTicket = async (req, res) => {
+    const { screeningId, customerId, seatId } = req.body
+    const ticket = await createTicketDb(screeningId, customerId, seatId)
+    res.status(200).json({ ticket })
+}
 
-module.exports = {
-  getSeatsById,
-};
+module.exports = { getSeats, createTicket }

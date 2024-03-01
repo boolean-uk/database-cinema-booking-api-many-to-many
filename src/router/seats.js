@@ -1,8 +1,9 @@
-const express = require("express");
-const { getSeatsById } = require("../controllers/seats");
+const express = require('express')
+const { getSeats, createTicket } = require('../controllers/seat.js')
+const router = express.Router()
 
-const router = express.Router();
+router.get('/:screenId', getSeats)
 
-router.get("/:id", getSeatsById);
+router.post('/ticket', createTicket)
 
-module.exports = router;
+module.exports = router
