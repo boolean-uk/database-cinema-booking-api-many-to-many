@@ -14,8 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Add your router below
 
-const seatsRouter = require('./router/seats')
-app.use('/seats', seatsRouter)
-
+const seatRouter = require('./routers/seats.js')
+app.use('/seats', seatRouter)
 
 module.exports = app
