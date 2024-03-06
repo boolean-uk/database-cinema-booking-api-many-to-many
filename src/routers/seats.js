@@ -2,7 +2,7 @@ const express = require('express')
 const { getSeats, createTicket } = require('../controllers/seats.js')
 const router = express.Router()
 
-router.get('/:screenId', getSeats)
+router.get('/screen/:screenId', getSeats)
 
 router.post('/ticket', createTicket)
 
