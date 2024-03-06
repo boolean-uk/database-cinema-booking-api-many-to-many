@@ -13,7 +13,7 @@ async function seed() {
 }
 
 async function createCustomer() {
-    const customer = await prisma.customer.create({
+    const newCustomer = await prisma.customer.create({
         data: {
             name: 'Alice',
             contact: {
@@ -21,16 +21,14 @@ async function createCustomer() {
                     email: 'alice@boolean.co.uk',
                     phone: '1234567890'
                 }
-            }
+            },
         },
         include: {
             contact: true
         }
     });
 
-    console.log('Customer created', customer);
-
-    return customer;
+    return newCustomer;
 }
 
 async function createMovies() {
@@ -105,7 +103,7 @@ async function createSeats(screens) {
         const seat = await prisma.seat.create({
             data: {
                 seatRow: 'A',
-                seatNumber: 1,
+                seatNumber: "1",
                 screen: {
                     connect: {id: screens[i].id}
                 }
@@ -149,8 +147,12 @@ async function createMoreSeats() {
 }
 
 seed()
-    .catch(async e => {
-        console.error(e);
-        await prisma.$disconnect();
+    .then(() => {
+        console.log('Seeding completed successfully');
+        process.exit(0); // Exit with a success status code
     })
-    .finally(() => process.exit(1));
+    .catch(async e => {
+        console.error('Seeding failed:', e);
+        await prisma.$disconnect(); // Ensure Prisma client disconnects after an error
+        process.exit(1); // Exit with an error status code
+    });

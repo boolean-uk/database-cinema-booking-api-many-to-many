@@ -1,4 +1,4 @@
-const { getSeatsDb, createTicketDb } = require('../domains/seat.js')
+const { getSeatsDb, createTicketDb } = require('../domain/seats.js')
 
 const getSeats = async (req, res) => {
     const screenId = Number(req.params.screenId)

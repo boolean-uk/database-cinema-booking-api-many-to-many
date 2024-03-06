@@ -16,7 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 
 const seatsRouter = require('./router/seats')
 app.use('/seats', seatsRouter)
-const ticketsRouter = require('./router/tickets')
-app.use('/tickets', ticketsRouter)
+
 
 module.exports = app
