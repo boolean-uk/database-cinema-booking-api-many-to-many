@@ -43,6 +43,7 @@ model Screen {
   id          Int @id @default(autoincrement())
   number      Int
   screenings  Screening[]
+  seats       Seat[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
