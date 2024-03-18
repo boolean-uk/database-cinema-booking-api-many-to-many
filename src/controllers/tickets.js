@@ -18,9 +18,7 @@ const createTicket = async (req, res) => {
     });
 
     if (existingSeats.length > 0) {
-      return res
-        .status(409)
-        .json({ error: "Seats already booked." });
+      return res.status(409).json({ error: "Seats already booked." });
     }
     const ticket = await prisma.ticket.create({
       data: {
